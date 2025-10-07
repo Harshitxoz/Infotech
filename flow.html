@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Service Landing Page</title>
+    <!-- Load Tailwind CSS and Lucide Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-red': '#FF3B62',
+                        'secondary-pink': '#FEE2E7',
+                        'dark-gray': '#1A1A1A',
+                        'text-gray': '#6B7280',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 4px 16px rgba(0, 0, 0, 0.05)',
+                        'button-red': '0 8px 16px rgba(255, 59, 98, 0.4)',
+                        'button-light': '0 4px 12px rgba(255, 59, 98, 0.2)',
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* BASE STYLES & UTILITIES */
+        body { font-family: 'Inter', sans-serif; color: #1A1A1A; overflow-x: hidden; }
+        .highlight-text { color: #FF3B62; font-weight: 800; }
+        
+        /* Custom underline for the hero title - PIXEL PERFECT DIMENSIONS */
+        .title-underline { position: relative; display: inline-block; }
+        .title-underline::after {
+            content: ''; position: absolute; left: 0; bottom: 4px;
+            width: 100%; height: 8px; background-color: #FF3B62;
+            opacity: 0.25; z-index: -1;
+        }
+        .content-container { max-width: 1200px; margin: auto; padding: 0 24px; }
+
+        /* HERO ELEMENTS & LAYOUT - PIXEL PERFECT DIMENSIONS (Desktop 1440px target) */
+        #hero-background {
+            position: absolute; top: 0; left: 0; width: 100%; height: 909px; /* Figma Height */
+            background-image: linear-gradient(180deg, #FEE2E7 0%, #FFFFFF 100%);
+            border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; z-index: -2;
+        }
+        .hero-image-wrapper {
+            position: relative; width: 450px; height: 650px; display: flex;
+            justify-content: center; align-items: flex-end; margin-top: -100px;
+        }
+        .hero-image-bg-circle {
+            position: absolute; bottom: 0; width: 550px; height: 550px;
+            border-radius: 50%; background-color: #FEE2E7; z-index: 1;
+        }
+        /* Badge Positioning relative to image area (based on Figma offsets) */
+        .rating-badge {
+            background-color: white; border-radius: 12px; padding: 16px 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); position: absolute;
+            left: 0; bottom: 150px; transform: translateX(-20px); width: 280px; z-index: 30; /* Increased Z-index */
+        }
+        .count-badge {
+            background-color: white; border-radius: 12px; padding: 12px 18px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1); position: absolute;
+            right: 0; bottom: 50px; transform: translateX(20px); width: 160px; z-index: 30; /* Increased Z-index */
+        }
+
+        /* FEATURE CARDS */
+        .feature-card {
+            border-radius: 24px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            padding: 24px; min-height: 400px; display: flex; flex-direction: column;
+            align-items: center; text-align: center; background-color: white; transition: transform 0.2s;
+        }
+        .feature-card:hover { transform: translateY(-5px); }
+
+        /* RESPONSIVE STYLES (Tablet/Mobile) */
+        @media (max-width: 1024px) {
+            #hero-background { height: 800px; }
+            .hero-image-wrapper { width: 380px; height: 580px; }
+            .hero-image-bg-circle { width: 450px; height: 450px; }
+        }
+        @media (max-width: 768px) {
+            .content-container { padding: 0 16px; }
+            #hero-background { height: 700px; border-radius: 30px; }
+            /* Mobile 375px target dimensions */
+            .hero-image-wrapper { width: 100%; max-width: 350px; height: 450px; margin-top: 24px; } /* Increased height slightly */
+            .hero-image-bg-circle { width: 300px; height: 300px; }
+            /* Badges stack nicely on mobile */
+            .rating-badge, .count-badge { position: static; transform: none; margin: 16px auto 0; max-width: 300px; padding: 12px 16px; z-index: 1; }
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-full max-w-sm bg-primary-red text-white z-50 p-6 sm:hidden">
+        <div class="flex justify-between items-center mb-10">
+            <div class="flex items-center space-x-2">
+                <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+                    <svg class="w-4 h-4 text-primary-red" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2-3-.895-3-2 1.343-2 3-2zM9 14h6M8 17h8"></path></svg>
+                </div>
+                <div><span class="text-lg font-bold">COMPANY</span><p class="text-xs opacity-70">business tagline</p></div>
+            </div>
+            <button id="close-mobile-menu" class="text-white"><i data-lucide="x" class="w-8 h-8"></i></button>
+        </div>
+        <nav class="space-y-6 text-xl font-medium">
+            <a href="#" class="flex items-center space-x-4 hover:opacity-80"><i data-lucide="home" class="w-6 h-6"></i><span>Home</span></a>
+            <a href="#" class="flex items-center space-x-4 hover:opacity-80"><i data-lucide="info" class="w-6 h-6"></i><span>About Us</span></a>
+            <a href="#" class="flex items-center space-x-4 hover:opacity-80"><i data-lucide="wrench" class="w-6 h-6"></i><span>Our Services</span></a>
+            <a href="#" class="flex items-center space-x-4 hover:opacity-80"><i data-lucide="tag" class="w-6 h-6"></i><span>Pricing</span></a>
+            <a href="#" class="flex items-center space-x-4 hover:opacity-80"><i data-lucide="message-circle" class="w-6 h-6"></i><span>FAQ</span></a>
+        </nav>
+        <button class="w-full mt-10 text-lg font-bold bg-white text-primary-red py-3 rounded-full shadow-button-red hover:bg-gray-100">
+            CONTACT US
+        </button>
+    </div>
+
+    <!-- Background Decoration -->
+    <div id="hero-background"></div>
+
+    <!-- Header Section -->
+    <header class="relative z-10 pt-6 pb-4">
+        <div class="content-container flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-full bg-primary-red flex items-center justify-center"><div class="w-4 h-4 rounded-full border-2 border-white"></div></div>
+                <div><h1 class="text-xl font-bold text-dark-gray leading-none">COMPANY</h1><p class="text-xs text-text-gray leading-none mt-0.5">business tagline</p></div>
+            </div>
+            <nav class="hidden lg:flex items-center space-x-10 text-base font-medium text-dark-gray">
+                <a href="#" class="hover:text-primary-red">Home</a><a href="#" class="hover:text-primary-red">About Us</a>
+                <a href="#" class="hover:text-primary-red">Our Services</a><a href="#" class="hover:text-primary-red">Pricing</a>
+                <a href="#" class="hover:text-primary-red">FAQ</a>
+            </nav>
+            <button class="hidden lg:block bg-primary-red text-white text-base font-medium px-6 py-3 rounded-full shadow-button-red hover:bg-red-600">
+                Get A Quote
+            </button>
+            <button id="open-mobile-menu" class="lg:hidden p-2"><div class="burger-icon"><span></span><span></span><span></span></div></button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="relative z-10 pt-16 pb-20 lg:pt-24 lg:pb-32">
+        <div class="content-container">
+            <div class="flex flex-col lg:flex-row items-center lg:items-start">
+                
+                <!-- Left Content Column -->
+                <div class="w-full lg:w-1/2 text-center lg:text-left">
+                    <h2 class="hero-title text-5xl md:text-[56px] font-extrabold leading-[1.1] text-dark-gray max-w-xl mx-auto lg:mx-0">
+                        Your Resume <span class="title-underline">Deserves A Yes</span> Let's Make It Happen
+                    </h2>
+                    <p class="hero-description text-base text-text-gray mt-6 max-w-lg mx-auto lg:mx-0">
+                        If Your Resume Isn’t Getting Responses, It’s Time For An Upgrade. Get An ATS-Optimized Resume Crafted By HR Experts To Help You Land More Interviews. Our Resumes Are Designed To Get Your Foot In The Door And Place Your Name At The Top Of The Shortlist.
+                    </p>
+                    <!-- Call to Action Buttons -->
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 mt-10 justify-center lg:justify-start">
+                        <a href="#" class="inline-flex justify-center items-center h-14 px-8 text-base font-bold text-primary-red border-2 border-primary-red rounded-full hover:bg-primary-red hover:text-white shadow-button-light">
+                            RESUME PAKAGES
+                        </a>
+                        <a href="#" class="inline-flex justify-center items-center h-14 px-8 text-base font-bold bg-primary-red text-white rounded-full shadow-button-red hover:bg-red-600">
+                            CONTACT US
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Image Column (Visual part of the Hero) -->
+                <div id="hero-image-container" class="w-full lg:w-1/2 relative flex justify-center lg:justify-end">
+                    <div class="hero-image-wrapper">
+                        <div class="hero-image-bg-circle"></div>
+                        
+                        <!-- ⚠️ I replaced the non-functional local path with a placeholder URL. ⚠️ -->
+                        <img 
+                            src="c:\Users\harsh\Downloads\portrait-happy-young-woman-standing-with-backpack-holding-books-mobile-phone-isolated-white-wall-removebg-preview 1.png"
+                            alt="A smiling student" 
+                            class="hero-image w-full h-full object-contain relative z-20"
+                        >
+                        
+                        <!-- ABSOLUTE POSITIONED BADGES (Desktop) -->
+                        <div class="hidden lg:block">
+                            <div class="rating-badge flex items-center space-x-4">
+                                <div class="text-4xl font-extrabold text-primary-red">4.9</div>
+                                <div>
+                                    <div class="flex text-yellow-500 text-lg space-x-0.5">
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                        <i data-lucide="star-half" class="w-4 h-4 fill-current"></i>
+                                    </div>
+                                    <p class="text-sm font-medium text-text-gray mt-1">Instructor Rating</p>
+                                </div>
+                            </div>
+                            <div class="count-badge flex items-center justify-between p-4">
+                                <div class="flex flex-col text-dark-gray leading-none">
+                                    <span class="text-3xl font-extrabold">260</span><span class="text-xl font-extrabold text-primary-red">+</span>
+                                    <span class="text-sm mt-1">Online Resume Created</span>
+                                </div>
+                                <div class="text-primary-red"><i data-lucide="graduation-cap" class="w-8 h-8 fill-current"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ABSOLUTE POSITIONED BADGES (Mobile - placed in content flow) -->
+                    <div class="lg:hidden w-full px-4 mt-8 flex flex-col items-center">
+                        <div class="rating-badge flex items-center space-x-4">
+                            <div class="text-4xl font-extrabold text-primary-red">4.9</div>
+                            <div>
+                                <div class="flex text-yellow-500 text-lg space-x-0.5">
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                    <i data-lucide="star-half" class="w-4 h-4 fill-current"></i>
+                                </div>
+                                <p class="text-sm font-medium text-text-gray mt-1">Instructor Rating</p>
+                            </div>
+                        </div>
+                        <div class="count-badge flex items-center justify-between p-4 mt-4">
+                            <div class="flex flex-col text-dark-gray leading-none">
+                                <span class="text-3xl font-extrabold">260</span><span class="text-xl font-extrabold text-primary-red">+</span>
+                                <span class="text-sm mt-1">Online Resume Created</span>
+                            </div>
+                            <div class="text-primary-red"><i data-lucide="graduation-cap" class="w-8 h-8 fill-current"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Services/Features Section -->
+    <section class="py-16 md:py-24">
+        <div class="content-container text-center">
+            
+            <div class="inline-block px-4 py-2 bg-secondary-pink text-primary-red text-sm font-semibold uppercase rounded-full tracking-wider mb-6">
+                What You Get
+            </div>
+
+            <h3 class="text-3xl md:text-4xl font-extrabold text-dark-gray mb-16 max-w-4xl mx-auto leading-tight">
+                You’re Not Just <span class="highlight-text">Another Applicant</span> And Your Resume Shouldn’t Look Like One
+            </h3>
+
+            <!-- 4-Column Feature Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                
+                <!-- Feature Card 1: Resume Format -->
+                <div class="feature-card">
+                    <img 
+                        src="c:\Users\harsh\Downloads\Group 90.png" 
+                        alt="Illustrated woman holding a resume" 
+                        class="w-full max-w-[200px] h-auto mb-6"
+                    >
+                    <h4 class="text-xl font-bold text-dark-gray mb-3">A Resume Format That Gets You Interviews</h4>
+                    <p class="text-sm text-text-gray">Get a professionally written, keyword-optimized resume that lands in recruiter inboxes.</p>
+                </div>
+
+                <!-- Feature Card 2: Cover Letter Style -->
+                <div class="feature-card">
+                    <img 
+                        src="c:\Users\harsh\Downloads\g1.png" 
+                        alt="Illustrated man sending a cover letter in a paper plane" 
+                        class="w-full max-w-[200px] h-auto mb-6"
+                    >
+                    <h4 class="text-xl font-bold text-dark-gray mb-3">A Cover Letter Style That Stands Out Strong</h4>
+                    <p class="text-sm text-text-gray">Stand out with a cover letter that speaks directly to the role and reflects your strengths.</p>
+                </div>
+
+                <!-- Feature Card 3: LinkedIn Profile -->
+                <div class="feature-card">
+                    <img 
+                        src="c:\Users\harsh\Downloads\Group 92.png" 
+                        alt="Illustrated people reviewing a profile on a large phone" 
+                        class="w-full max-w-[200px] h-auto mb-6"
+                    >
+                    <h4 class="text-xl font-bold text-dark-gray mb-3">A LinkedIn Profile That Works For You</h4>
+                    <p class="text-sm text-text-gray">Attract the right eyes, start conversations, and show up in recruiter searches.</p>
+                </div>
+
+                <!-- Feature Card 4: Interview Strategy -->
+                <div class="feature-card">
+                    <img 
+                        src="c:\Users\harsh\Downloads\g1 (1).png" 
+                        alt="Illustrated people having an interview discussion" 
+                        class="w-full max-w-[200px] h-auto mb-6"
+                    >
+                    <h4 class="text-xl font-bold text-dark-gray mb-3">An Interview Strategy That Builds Confidence</h4>
+                    <p class="text-sm text-text-gray">Interview preparation with real HR professionals so you speak clearly confidently.</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Simple Footer Placeholder (For completeness) -->
+    <footer class="py-8 bg-gray-50 text-center text-sm text-text-gray">
+        <div class="content-container">&copy; 2025 COMPANY. All rights reserved. | <a href="#" class="hover:text-primary-red">Privacy Policy</a></div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Interactivity -->
+    <script>
+        lucide.createIcons();
+
+        const mobileMenu = document.getElementById('mobile-menu');
+        const openButton = document.getElementById('open-mobile-menu');
+        const closeButton = document.getElementById('close-mobile-menu');
+
+        const toggleMenu = (open) => {
+            if (open) {
+                mobileMenu.classList.add('open');
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        };
+
+        openButton.addEventListener('click', () => toggleMenu(true));
+        closeButton.addEventListener('click', () => toggleMenu(false));
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => toggleMenu(false));
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+    </script>
+</body>
+</html>
