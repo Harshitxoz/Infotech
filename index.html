@@ -98,9 +98,18 @@
         @media (max-width: 768px) {
             .content-container { padding: 0 16px; }
             #hero-background { height: 700px; border-radius: 30px; }
-            /* Mobile 375px target dimensions */
-            .hero-image-wrapper { width: 100%; max-width: 350px; height: 450px; margin-top: 24px; }
-            .hero-image-bg-circle { width: 300px; height: 300px; }
+            
+            /* FIX: Significantly increased size for mobile to match Figma screenshot */
+            .hero-image-wrapper { 
+                width: 100%; 
+                max-width: 350px; 
+                height: 480px; /* Increased height to give more space for the image */
+                margin-top: 24px; 
+            } 
+            .hero-image-bg-circle { 
+                width: 400px; /* Increased size of the circle background */
+                height: 400px; 
+            }
             /* Badges stack nicely on mobile */
             .rating-badge, .count-badge { position: static; transform: none; margin: 16px auto 0; max-width: 300px; padding: 12px 16px; z-index: 1; }
         }
@@ -109,7 +118,6 @@
 <body class="bg-white">
 
     <!-- Mobile Menu Overlay -->
-    <!-- The 'open' class is controlled by JavaScript and defined in the CSS above -->
     <div id="mobile-menu" class="fixed top-0 right-0 h-full w-full max-w-sm bg-primary-red text-white z-50 p-6 sm:hidden">
         <div class="flex justify-between items-center mb-10">
             <div class="flex items-center space-x-2">
@@ -151,7 +159,6 @@
             <button class="hidden lg:block bg-primary-red text-white text-base font-medium px-6 py-3 rounded-full shadow-button-red hover:bg-red-600">
                 Get A Quote
             </button>
-            <!-- FIX: Replaced custom burger HTML with Lucide icon to ensure proper functionality -->
             <button id="open-mobile-menu" class="lg:hidden p-2"><i data-lucide="menu" class="w-6 h-6"></i></button>
         </div>
     </header>
@@ -161,7 +168,7 @@
         <div class="content-container">
             <div class="flex flex-col lg:flex-row items-center lg:items-start">
                 
-                <!-- Left Content Column -->
+                <!-- Left Content Column (Text & Buttons) - Stays in order 1 on mobile (default) -->
                 <div class="w-full lg:w-1/2 text-center lg:text-left">
                     <h2 class="hero-title text-5xl md:text-[56px] font-extrabold leading-[1.1] text-dark-gray max-w-xl mx-auto lg:mx-0">
                         Your Resume <span class="title-underline">Deserves A Yes</span> Let's Make It Happen
@@ -180,7 +187,7 @@
                     </div>
                 </div>
 
-                <!-- Right Image Column (Visual part of the Hero) -->
+                <!-- Right Image Column (Visual part of the Hero) - Should appear second on mobile -->
                 <div id="hero-image-container" class="w-full lg:w-1/2 relative flex justify-center lg:justify-end">
                     <div class="hero-image-wrapper">
                         <div class="hero-image-bg-circle"></div>
@@ -215,26 +222,29 @@
                         </div>
                     </div>
 
-                    <!-- MOBILE BADGES (Placed in content flow) -->
-                    <div class="lg:hidden w-full px-4 mt-8 flex flex-col items-center">
-                        <div class="rating-badge flex items-center space-x-4">
-                            <div class="text-4xl font-extrabold text-primary-red">4.9</div>
-                            <div>
-                                <div class="flex text-yellow-500 text-lg space-x-0.5">
-                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                    <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                    <i data-lucide="star-half" class="w-4 h-4 fill-current"></i>
-                                </div>
-                                <p class="text-sm font-medium text-text-gray mt-1">Instructor Rating</p>
+                    <!-- MOBILE BADGES (Placed in content flow) - Should appear third on mobile -->
+                    <!-- I moved this section OUTSIDE the hero-image-wrapper -->
+                </div>
+                
+                <!-- NEW LOCATION FOR MOBILE BADGES: Now placed after the image column -->
+                <div class="lg:hidden w-full px-4 mt-8 flex flex-col items-center">
+                    <div class="rating-badge flex items-center space-x-4">
+                        <div class="text-4xl font-extrabold text-primary-red">4.9</div>
+                        <div>
+                            <div class="flex text-yellow-500 text-lg space-x-0.5">
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i><i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star-half" class="w-4 h-4 fill-current"></i>
                             </div>
+                            <p class="text-sm font-medium text-text-gray mt-1">Instructor Rating</p>
                         </div>
-                        <div class="count-badge flex items-center justify-between p-4 mt-4">
-                            <div class="flex flex-col text-dark-gray leading-none">
-                                <span class="text-3xl font-extrabold">260</span><span class="text-xl font-extrabold text-primary-red">+</span>
-                                <span class="text-sm mt-1">Online Resume Created</span>
-                            </div>
-                            <div class="text-primary-red"><i data-lucide="graduation-cap" class="w-8 h-8 fill-current"></i></div>
+                    </div>
+                    <div class="count-badge flex items-center justify-between p-4 mt-4">
+                        <div class="flex flex-col text-dark-gray leading-none">
+                            <span class="text-3xl font-extrabold">260</span><span class="text-xl font-extrabold text-primary-red">+</span>
+                            <span class="text-sm mt-1">Online Resume Created</span>
                         </div>
+                        <div class="text-primary-red"><i data-lucide="graduation-cap" class="w-8 h-8 fill-current"></i></div>
                     </div>
                 </div>
 
